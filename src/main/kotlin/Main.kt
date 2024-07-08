@@ -1,4 +1,6 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,14 +16,24 @@ import androidx.compose.ui.window.application
 @Preview
 fun App() {
     var text by remember { mutableStateOf("Track") }
-
-    MaterialTheme {
-        Button(onClick = {
-            text = "Hello, Desktop!"
-        }) {
-            Text(text)
+    Column {
+        Row {
+            SearchBarHolder("Test")
+            Button(onClick = {}) {
+                Text("Track")
+            }
         }
+        ResultHolder("Test")
     }
+}
+
+@Composable
+fun SearchBarHolder(name: String) {
+    Text("Bar goes here")
+}
+@Composable
+fun ResultHolder(name: String) {
+    Text("Results goes here")
 }
 
 fun main() = application {
