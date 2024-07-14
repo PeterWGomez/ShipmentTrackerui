@@ -11,19 +11,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import org.example.Shipment
+import org.example.shippingUpdate
 
 @Composable
 @Preview
 fun App() {
     var text by remember { mutableStateOf("Track") }
+    var updateHistory by remember { mutableStateOf(mutableListOf<String>()) }
+    var shipments by remember { mutableStateOf(mutableListOf<Shipment>()) }
+    updateHistory.add("First")
+    updateHistory.add("Second")
     Column {
         Row {
-            SearchBarHolder("Test")
-            Button(onClick = {}) {
+            SearchBarHolder("You don't see this")
+            Button(onClick = {
+                updateHistory.add("New")
+            }) {
                 Text("Track")
             }
         }
-        ResultHolder("Test")
+        ResultHolder(updateHistory)
     }
 }
 
@@ -32,8 +40,12 @@ fun SearchBarHolder(name: String) {
     Text("Bar goes here")
 }
 @Composable
-fun ResultHolder(name: String) {
-    Text("Results goes here")
+fun ResultHolder(listofshipments: MutableList<String>) {
+    Text("test")
+
+    for (item: String in listofshipments){
+        Text(item)
+    }
 }
 
 fun main() = application {
