@@ -1,12 +1,12 @@
 package org.example
 
 data class Shipment(
-    var status: String,
-    var id: String,
-    var notes: String,
+    var status: String = "pending",
+    var id: String = "pending",
+    var notes: String = "",
     var updateHistory: MutableList<shippingUpdate> = mutableListOf<shippingUpdate>(),
-    var expectedDeliveryDateTimestamp: Long,
-    var currentLocation: String
+    var expectedDeliveryDateTimestamp: Long = 0,
+    var currentLocation: String = "pending"
 ) {
     private var _updateHistory = mutableListOf<shippingUpdate>()
 
