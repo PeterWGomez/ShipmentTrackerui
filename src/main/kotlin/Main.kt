@@ -3,18 +3,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.Shipment
-import org.example.shippingUpdate
+import org.example.ShippingUpdate
 import java.io.File
-import java.util.*
-import javax.sound.midi.Track
 
 @Composable
 @Preview
@@ -22,8 +17,13 @@ fun App() {
     val trackerViewHelper = remember { TrackerViewHelper() }
     val coroutineScope = rememberCoroutineScope()
 
-    // initialize simulator
+    // initialize simulator, coroutine launch needed for suspend functions to work
     var trackingSimulator = remember {TrackingSimulator()}
+    coroutineScope.launch {
+        trackingSimulator.runSimulation()
+    }
+
+    //---------------------------------
 
     // make shipments object list -- to be deleted
     var shipments by remember { mutableStateOf(mutableListOf<Shipment>()) }
@@ -36,9 +36,9 @@ fun App() {
     File("testcreate.txt").forEachLine {
         //println(it)
         val parts = it.split(",").map { it.trim() }
-        var updateHistory = mutableListOf<shippingUpdate>()
-        var shipment = Shipment(parts[0], parts[1],"",updateHistory, parts[2].toLong())
-        shipments.add(shipment)
+        var updateHistory = mutableListOf<ShippingUpdate>()
+//        var shipment = Shipment(parts[0], parts[1],"",updateHistory, parts[2].toLong())
+//        shipments.add(shipment)
     }
 
     Column {
@@ -53,10 +53,8 @@ fun App() {
         Row {
 
         }
-        for (item: Shipment in shipments){
+        for (item: Shipment in trackingSimulator.shipments){
             coroutineScope.launch {
-                item.start(dbfile)
-                //trackerViewHelper.startTimer2(item.expectedDeliveryDateTimestamp)
             }
             Text("Status: ${item.status}")
             Text("ID: ${item.id}")

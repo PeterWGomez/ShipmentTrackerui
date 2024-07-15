@@ -1,5 +1,6 @@
 import org.example.Shipment
-import org.example.shippingUpdate
+import org.example.ShippingUpdate
+import java.io.File
 
 class TrackingSimulator(
     var shipments: MutableList<Shipment> = mutableListOf<Shipment>()
@@ -45,7 +46,23 @@ class TrackingSimulator(
         shipments.add(shipment)
     }
     // Run Simulation starts the timer for each shipment and starts pulling updates from the test.txt
-    fun runSimulation() {
+    suspend fun runSimulation() {
+        // Read test.txt and use the first 3 fields to determine the update, id, and timestamp for each update
+        File("test.txt").forEachLine {
+            //println(it)
+            val dataline = it.split(",").map { it.trim() }
+//            println(it)
+//            println(dataline)
+            println("update: ${dataline[0]}")
+            println("id: ${dataline[1]}")
+            println("timestamp: ${dataline[2]}")
+            // doesn't work atm, needs to be in coroutine body?
+            //delay(1000)
+            //gets the shipment and adds the update, needs non null asserted !! to work
+            println("Previous update: ${findShipment(dataline[1])!!.status}")
+            var newUpdate = ShippingUpdate(findShipment(dataline[1])!!.status, dataline[0], dataline[2].toLong())
+            findShipment(dataline[1])?.addUpdate(newUpdate)
+        }
 
     }
 }

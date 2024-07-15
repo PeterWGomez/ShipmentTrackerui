@@ -1,11 +1,8 @@
 package org.example
 
-data class shippingUpdate(
+data class ShippingUpdate(
     var previousStatus: String,
     var newStatus: String,
     var timestamp: Long
 ) {
-    fun getPoint(){
-        println("hi")
-    }
 }

@@ -1,31 +1,32 @@
 package org.example
 
-import androidx.compose.material.Text
 import kotlinx.coroutines.delay
-import java.io.File
-import java.util.*
 
 data class Shipment(
     var status: String = "pending",
     var id: String = "pending",
-    var notes: String = "",
-    var updateHistory: MutableList<shippingUpdate> = mutableListOf<shippingUpdate>(),
+    var notes: MutableList<String> = mutableListOf<String>(),
+    var updateHistory: MutableList<ShippingUpdate> = mutableListOf<ShippingUpdate>(),
     var expectedDeliveryDateTimestamp: Long = 0,
     var currentLocation: String = "pending"
 ) {
-    private var _updateHistory = mutableListOf<shippingUpdate>()
+    private var _updateHistory = mutableListOf<ShippingUpdate>()
 
-    val shippingUpdates: List<shippingUpdate>
+    val ShippingUpdates: List<ShippingUpdate>
         get() {
             return _updateHistory.toList()
         }
     fun addNote(note: String) {
-        notes = notes + "\n\n" + note
+        notes.add(note)
     }
-    fun addUpdate(update: String) {
+    // Change to take updates
+    fun addUpdate(update: ShippingUpdate) {
         // How does long work here, update
-        var newUpdate = shippingUpdate("reference for last update", update, 100)
-        updateHistory.add(newUpdate)
+//        var newUpdate = ShippingUpdate("reference for last update", update, 100)
+        updateHistory.add(update)
+        if (update.newStatus == "created" || update.newStatus == "shipped" || update.newStatus == "delayed" || update.newStatus == "lost" || update.newStatus == "canceled" || update.newStatus == "delivered") {
+            status = update.newStatus
+        }
     }
 
     private val subscribers = mutableListOf<(Long) -> Unit>()
@@ -41,31 +42,6 @@ data class Shipment(
     fun notifyObservers() {
         subscribers.forEach {
             it(expectedDeliveryDateTimestamp)
-        }
-    }
-
-
-    suspend fun start(updatelist: List<String>) {
-        while(expectedDeliveryDateTimestamp > 0) {
-            delay(1000)
-            expectedDeliveryDateTimestamp++
-            //println(expectedDeliveryDateTimestamp)
-            println("Status: ${status}")
-            println("ID: ${id}")
-            println("Notes: ${notes}")
-            //Text(item.updateHistory)
-            println("Expected Delivery Time: ${expectedDeliveryDateTimestamp}")
-            println("Current Location: ${currentLocation}")
-            println("----------")
-            //Read in other updates from DB file
-            for (update in updatelist) {
-                println("Update list is ${updatelist}")
-                val update = update.split(",").map { update.trim() }
-                println("Update is ${update}")
-//                if (update[1].compareTo("${id}") == 0) {
-//                    println("Update was for: ${update[1]}")
-//                }
-            }
         }
     }
 }
