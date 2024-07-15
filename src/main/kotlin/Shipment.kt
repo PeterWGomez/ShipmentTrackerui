@@ -1,5 +1,7 @@
 package org.example
 
+import kotlinx.coroutines.delay
+
 data class Shipment(
     var status: String = "pending",
     var id: String = "pending",
@@ -22,5 +24,11 @@ data class Shipment(
         var newUpdate = shippingUpdate("reference for last update", update, 100)
         updateHistory.add(newUpdate)
     }
-
+    suspend fun start() {
+        while(expectedDeliveryDateTimestamp > 0) {
+            delay(1000)
+            expectedDeliveryDateTimestamp++
+            println(expectedDeliveryDateTimestamp)
+        }
+        }
 }

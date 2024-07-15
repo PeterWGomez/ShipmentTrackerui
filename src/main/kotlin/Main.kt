@@ -4,34 +4,36 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.example.Shipment
+import org.example.shippingUpdate
 import java.io.File
+import java.util.*
 
 @Composable
 @Preview
 fun App() {
+    val coroutineScope = rememberCoroutineScope()
+
     // make shipments object list
     var shipments by remember { mutableStateOf(mutableListOf<Shipment>()) }
 
     // read in the file and fill the shipments
-    //readFile("testcreate.txt")
     File("testcreate.txt").forEachLine {
         //println(it)
         val parts = it.split(",").map { it.trim() }
-        var shipment = Shipment(parts[1])
+        var updateHistory = mutableListOf<shippingUpdate>()
+        var shipment = Shipment(parts[0], parts[1],"",updateHistory, parts[2].toLong())
         shipments.add(shipment)
     }
 
 
     // make viewhelper to update ui
-    val viewHelper = remember {TrackerViewHelper(shipments)}
+    val viewHelper = remember {TrackerViewHelper()}
 
 //    var updateHistory by remember { mutableStateOf(mutableListOf<String>()) }
 //    updateHistory.add("First")
@@ -41,7 +43,19 @@ fun App() {
             //SearchBarHolder("You don't see this")
             TrackingInput()
         }
-        ResultHolder(shipments)
+//        ResultHolder(shipments)
+        for (item: Shipment in shipments){
+            Text("Status: ${item.status}")
+            Text("ID: ${item.id}")
+            Text("Notes: ${item.notes}")
+            //Text(item.updateHistory)
+            Text("Expected Delivery Time: ${Date(item.expectedDeliveryDateTimestamp)}")
+            Text("Current Location: ${item.currentLocation}")
+            Text("----------")
+            coroutineScope.launch {
+                item.start()
+            }
+        }
     }
 }
 
@@ -54,9 +68,16 @@ fun ResultHolder(listofshipments: MutableList<Shipment>) {
     Text("test")
 
     for (item: Shipment in listofshipments){
-        Text(item.status)
-        Text(item.id)
-        Text(item.notes)
+        Text("Status: ${item.status}")
+        Text("ID: ${item.id}")
+        Text("Notes: ${item.notes}")
+        //Text(item.updateHistory)
+        Text("Expected Delivery Time: ${Date(item.expectedDeliveryDateTimestamp)}")
+        Text("Current Location: ${item.currentLocation}")
+        Text("----------")
+//        coroutineScope.launch {
+//            item.start()
+//        }
     }
 }
 @Composable
