@@ -1,3 +1,5 @@
+import org.example.Shipment
+
 interface ShipmentObserver {
-    fun notify(timeRemaining: Long)
+    fun notify(shipments: MutableList<Shipment>)
 }

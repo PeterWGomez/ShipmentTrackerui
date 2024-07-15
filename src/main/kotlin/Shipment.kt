@@ -19,29 +19,26 @@ data class Shipment(
     fun addNote(note: String) {
         notes.add(note)
     }
-    // Change to take updates
     fun addUpdate(update: ShippingUpdate) {
-        // How does long work here, update
-//        var newUpdate = ShippingUpdate("reference for last update", update, 100)
         updateHistory.add(update)
         if (update.newStatus == "created" || update.newStatus == "shipped" || update.newStatus == "delayed" || update.newStatus == "lost" || update.newStatus == "canceled" || update.newStatus == "delivered") {
             status = update.newStatus
         }
     }
 
-    private val subscribers = mutableListOf<(Long) -> Unit>()
-
-    fun subscribe(observer: (Long) -> Unit) {
-        subscribers.add(observer)
-    }
-
-    fun unsubscribe(observer: (Long) -> Unit) {
-        subscribers.remove(observer)
-    }
-
-    fun notifyObservers() {
-        subscribers.forEach {
-            it(expectedDeliveryDateTimestamp)
-        }
-    }
+//    private val subscribers = mutableListOf<(Long) -> Unit>()
+//
+//    fun subscribe(observer: (Long) -> Unit) {
+//        subscribers.add(observer)
+//    }
+//
+//    fun unsubscribe(observer: (Long) -> Unit) {
+//        subscribers.remove(observer)
+//    }
+//
+//    fun notifyObservers() {
+//        subscribers.forEach {
+//            it(expectedDeliveryDateTimestamp)
+//        }
+//    }
 }

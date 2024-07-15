@@ -20,31 +20,19 @@ fun App() {
     // initialize simulator, coroutine launch needed for suspend functions to work
     var trackingSimulator = remember {TrackingSimulator()}
     coroutineScope.launch {
-        trackingSimulator.runSimulation()
+        // This updates the ui, but is not delayable
+        //trackingSimulator.runSimulation()
     }
 
     //---------------------------------
 
-    // make shipments object list -- to be deleted
-    var shipments by remember { mutableStateOf(mutableListOf<Shipment>()) }
-
-    // read file into a list
-    val dbfile: List<String> = File("testupdates.txt").readLines()
-
-
-    // read in the file and fill the shipments
-    File("testcreate.txt").forEachLine {
-        //println(it)
-        val parts = it.split(",").map { it.trim() }
-        var updateHistory = mutableListOf<ShippingUpdate>()
-//        var shipment = Shipment(parts[0], parts[1],"",updateHistory, parts[2].toLong())
-//        shipments.add(shipment)
-    }
-
     Column {
         Button(onClick = {
             coroutineScope.launch {
-                trackerViewHelper.startTimer(trackerViewHelper.textFieldValue.toInt())
+                //trackerViewHelper.startTimer(trackerViewHelper.textFieldValue.toInt())
+                // This updates the ui, but is not delayable
+                //trackingSimulator.runSimulation()
+                trackerViewHelper.startTimer2()
             }
         }) {
             Text("Track")
@@ -53,14 +41,15 @@ fun App() {
         Row {
 
         }
-        for (item: Shipment in trackingSimulator.shipments){
+//        for (item: Shipment in trackingSimulator.shipments){
+        for (item: Shipment in trackerViewHelper.shipments){
             coroutineScope.launch {
             }
             Text("Status: ${item.status}")
             Text("ID: ${item.id}")
             Text("Notes: ${item.notes}")
             //Text(item.updateHistory)
-            Text("Expected Delivery Time: ${trackerViewHelper.timeRemaining2}")
+            Text("Expected Delivery Time: ${item.expectedDeliveryDateTimestamp}")
             Text("Current Location: ${item.currentLocation}")
             Text("----------")
         }

@@ -1,3 +1,5 @@
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import org.example.Shipment
 import org.example.ShippingUpdate
 import java.io.File
@@ -45,6 +47,23 @@ class TrackingSimulator(
     fun addShipment(shipment: Shipment) {
         shipments.add(shipment)
     }
+
+    private val subscribers = mutableListOf<(MutableList<Shipment>) -> Unit>()
+
+    fun subscribe(observer: (MutableList<Shipment>) -> Unit) {
+        subscribers.add(observer)
+    }
+
+    fun unsubscribe(observer: (MutableList<Shipment>) -> Unit) {
+        subscribers.remove(observer)
+    }
+
+    fun notifyObservers() {
+        subscribers.forEach {
+            it(shipments)
+        }
+    }
+
     // Run Simulation starts the timer for each shipment and starts pulling updates from the test.txt
     suspend fun runSimulation() {
         // Read test.txt and use the first 3 fields to determine the update, id, and timestamp for each update
