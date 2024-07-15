@@ -5,6 +5,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import kotlinx.coroutines.delay
@@ -17,6 +18,7 @@ import java.util.*
 @Composable
 @Preview
 fun App() {
+    val trackerViewHelper = remember { TrackerViewHelper() }
     val coroutineScope = rememberCoroutineScope()
 
     // make shipments object list
@@ -31,73 +33,41 @@ fun App() {
         shipments.add(shipment)
     }
 
-
-    // make viewhelper to update ui
-    val viewHelper = remember {TrackerViewHelper()}
-
-//    var updateHistory by remember { mutableStateOf(mutableListOf<String>()) }
-//    updateHistory.add("First")
-//    updateHistory.add("Second")
     Column {
-        Row {
-            //SearchBarHolder("You don't see this")
-            TrackingInput()
+        Button(onClick = {
+            coroutineScope.launch {
+                trackerViewHelper.startTimer(trackerViewHelper.textFieldValue.toInt())
+            }
+        }) {
+            Text("Track")
         }
-//        ResultHolder(shipments)
+        Text("${trackerViewHelper.timeRemaining}")
+        Row {
+
+        }
         for (item: Shipment in shipments){
+            coroutineScope.launch {
+                item.start()
+                //trackerViewHelper.startTimer2(item.expectedDeliveryDateTimestamp)
+            }
             Text("Status: ${item.status}")
             Text("ID: ${item.id}")
             Text("Notes: ${item.notes}")
             //Text(item.updateHistory)
-            Text("Expected Delivery Time: ${Date(item.expectedDeliveryDateTimestamp)}")
+            Text("Expected Delivery Time: ${trackerViewHelper.timeRemaining2}")
             Text("Current Location: ${item.currentLocation}")
             Text("----------")
-            coroutineScope.launch {
-                item.start()
-            }
         }
     }
-}
+    // The UI has failed, defaulting to console for now to make sure the program actually works
+    //Read in other updates to DB file
+    File("testupdates.txt").forEachLine {
+        //println(it)
+        val databasefile = it.split(",").map { it.trim() }
 
-@Composable
-fun SearchBarHolder(name: String) {
-    Text("Bar goes here")
-}
-@Composable
-fun ResultHolder(listofshipments: MutableList<Shipment>) {
-    Text("test")
-
-    for (item: Shipment in listofshipments){
-        Text("Status: ${item.status}")
-        Text("ID: ${item.id}")
-        Text("Notes: ${item.notes}")
-        //Text(item.updateHistory)
-        Text("Expected Delivery Time: ${Date(item.expectedDeliveryDateTimestamp)}")
-        Text("Current Location: ${item.currentLocation}")
-        Text("----------")
-//        coroutineScope.launch {
-//            item.start()
-//        }
     }
 }
-@Composable
-fun TrackingInput() {
-    var text by remember { mutableStateOf("") }
 
-    TextField(
-        value = text,
-        onValueChange = { text = it },
-        label = { Text("Tracking #") }
-    )
-    Button(onClick = {
-    }) {
-        Text("Track")
-    }
-
-}
-
-fun readFile(fileName: String)
-        = File(fileName).forEachLine { println(it) }
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {

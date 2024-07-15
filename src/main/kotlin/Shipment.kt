@@ -1,6 +1,8 @@
 package org.example
 
+import androidx.compose.material.Text
 import kotlinx.coroutines.delay
+import java.util.*
 
 data class Shipment(
     var status: String = "pending",
@@ -24,11 +26,36 @@ data class Shipment(
         var newUpdate = shippingUpdate("reference for last update", update, 100)
         updateHistory.add(newUpdate)
     }
+
+    private val subscribers = mutableListOf<(Long) -> Unit>()
+
+    fun subscribe(observer: (Long) -> Unit) {
+        subscribers.add(observer)
+    }
+
+    fun unsubscribe(observer: (Long) -> Unit) {
+        subscribers.remove(observer)
+    }
+
+    fun notifyObservers() {
+        subscribers.forEach {
+            it(expectedDeliveryDateTimestamp)
+        }
+    }
+
+
     suspend fun start() {
         while(expectedDeliveryDateTimestamp > 0) {
             delay(1000)
             expectedDeliveryDateTimestamp++
-            println(expectedDeliveryDateTimestamp)
+            //println(expectedDeliveryDateTimestamp)
+            println("Status: ${status}")
+            println("ID: ${id}")
+            println("Notes: ${notes}")
+            //Text(item.updateHistory)
+            println("Expected Delivery Time: ${expectedDeliveryDateTimestamp}")
+            println("Current Location: ${currentLocation}")
+            println("----------")
         }
-        }
+    }
 }
