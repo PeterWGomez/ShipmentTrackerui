@@ -14,6 +14,7 @@ import org.example.Shipment
 import org.example.shippingUpdate
 import java.io.File
 import java.util.*
+import javax.sound.midi.Track
 
 @Composable
 @Preview
@@ -21,7 +22,10 @@ fun App() {
     val trackerViewHelper = remember { TrackerViewHelper() }
     val coroutineScope = rememberCoroutineScope()
 
-    // make shipments object list
+    // initialize simulator
+    var trackingSimulator = remember {TrackingSimulator()}
+
+    // make shipments object list -- to be deleted
     var shipments by remember { mutableStateOf(mutableListOf<Shipment>()) }
 
     // read file into a list
@@ -63,7 +67,6 @@ fun App() {
             Text("----------")
         }
     }
-    // The UI has failed, defaulting to console for now to make sure the program actually works
 }
 
 

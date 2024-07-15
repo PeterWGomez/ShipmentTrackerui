@@ -1,3 +1,3 @@
-interface UpdateObserver {
+interface ShipmentObserver {
     fun notify(timeRemaining: Long)
 }
