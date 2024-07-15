@@ -24,6 +24,10 @@ fun App() {
     // make shipments object list
     var shipments by remember { mutableStateOf(mutableListOf<Shipment>()) }
 
+    // read file into a list
+    val dbfile: List<String> = File("testupdates.txt").readLines()
+
+
     // read in the file and fill the shipments
     File("testcreate.txt").forEachLine {
         //println(it)
@@ -47,7 +51,7 @@ fun App() {
         }
         for (item: Shipment in shipments){
             coroutineScope.launch {
-                item.start()
+                item.start(dbfile)
                 //trackerViewHelper.startTimer2(item.expectedDeliveryDateTimestamp)
             }
             Text("Status: ${item.status}")
@@ -60,12 +64,6 @@ fun App() {
         }
     }
     // The UI has failed, defaulting to console for now to make sure the program actually works
-    //Read in other updates to DB file
-    File("testupdates.txt").forEachLine {
-        //println(it)
-        val databasefile = it.split(",").map { it.trim() }
-
-    }
 }
 
 

@@ -2,6 +2,7 @@ package org.example
 
 import androidx.compose.material.Text
 import kotlinx.coroutines.delay
+import java.io.File
 import java.util.*
 
 data class Shipment(
@@ -44,7 +45,7 @@ data class Shipment(
     }
 
 
-    suspend fun start() {
+    suspend fun start(updatelist: List<String>) {
         while(expectedDeliveryDateTimestamp > 0) {
             delay(1000)
             expectedDeliveryDateTimestamp++
@@ -56,6 +57,15 @@ data class Shipment(
             println("Expected Delivery Time: ${expectedDeliveryDateTimestamp}")
             println("Current Location: ${currentLocation}")
             println("----------")
+            //Read in other updates from DB file
+            for (update in updatelist) {
+                println("Update list is ${updatelist}")
+                val update = update.split(",").map { update.trim() }
+                println("Update is ${update}")
+//                if (update[1].compareTo("${id}") == 0) {
+//                    println("Update was for: ${update[1]}")
+//                }
+            }
         }
     }
 }
