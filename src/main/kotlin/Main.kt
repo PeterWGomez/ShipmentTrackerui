@@ -8,8 +8,6 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import kotlinx.coroutines.launch
 import org.example.Shipment
-import org.example.ShippingUpdate
-import java.io.File
 
 @Composable
 @Preview
@@ -29,22 +27,18 @@ fun App() {
     Column {
         Button(onClick = {
             coroutineScope.launch {
-                //trackerViewHelper.startTimer(trackerViewHelper.textFieldValue.toInt())
                 // This updates the ui, but is not delayable
-                //trackingSimulator.runSimulation()
-                trackerViewHelper.startTimer2()
+                trackingSimulator.runSimulation()
+                trackerViewHelper.startTimer(trackingSimulator)
             }
         }) {
             Text("Track")
         }
-        Text("${trackerViewHelper.timeRemaining}")
         Row {
 
         }
-//        for (item: Shipment in trackingSimulator.shipments){
-        for (item: Shipment in trackerViewHelper.shipments){
-            coroutineScope.launch {
-            }
+        for (item: Shipment in trackingSimulator.shipments){
+//        for (item: Shipment in trackerViewHelper.shipments){
             Text("Status: ${item.status}")
             Text("ID: ${item.id}")
             Text("Notes: ${item.notes}")

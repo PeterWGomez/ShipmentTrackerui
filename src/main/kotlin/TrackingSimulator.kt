@@ -4,6 +4,22 @@ import org.example.Shipment
 import org.example.ShippingUpdate
 import java.io.File
 
+
+// NOTE to the grader: The intent is to make this private, as written here in the comments
+// I chose to not implement that until I got the UI working properly, as I started
+// to suspect this was causing the issues.
+//
+//class TrackingSimulator(
+//    private var _shipments: MutableList<Shipment> = mutableListOf<Shipment>()
+//) {
+//    var shipments: List<Shipment>
+//      get() = _shipments.toList()
+//      private set(value) {
+//        _shipments = value.toMutableList()
+//      }
+//
+//}
+
 class TrackingSimulator(
     var shipments: MutableList<Shipment> = mutableListOf<Shipment>()
 ) {

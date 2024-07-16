@@ -25,20 +25,4 @@ data class Shipment(
             status = update.newStatus
         }
     }
-
-//    private val subscribers = mutableListOf<(Long) -> Unit>()
-//
-//    fun subscribe(observer: (Long) -> Unit) {
-//        subscribers.add(observer)
-//    }
-//
-//    fun unsubscribe(observer: (Long) -> Unit) {
-//        subscribers.remove(observer)
-//    }
-//
-//    fun notifyObservers() {
-//        subscribers.forEach {
-//            it(expectedDeliveryDateTimestamp)
-//        }
-//    }
 }
