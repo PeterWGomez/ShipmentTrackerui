@@ -18,14 +18,11 @@ class TrackerViewHelper() {
     var shipments: MutableList<Shipment> = mutableListOf()
         private set
 
-    suspend fun trackShipment (tracksim: TrackingSimulator) {
-        shipments = tracksim.shipments
-        var tracksim2 = TrackingSimulator()
-        tracksim2.shipments = shipments
-        tracksim2.subscribe {
-            tracksim2.shipments = it
+    fun trackShipment (shipment: Shipment) {
+
+        shipment.subscribe {
+            shipmentStatus = it.status
         }
-        tracksim2.runSimulation()
     }
 
     fun stopTracking() {

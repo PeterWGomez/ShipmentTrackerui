@@ -64,29 +64,15 @@ class TrackingSimulator(
         shipments.add(shipment)
     }
 
-    private val subscribers = mutableListOf<(MutableList<Shipment>) -> Unit>()
-
-    fun subscribe(observer: (MutableList<Shipment>) -> Unit) {
-        subscribers.add(observer)
-    }
-
-    fun unsubscribe(observer: (MutableList<Shipment>) -> Unit) {
-        subscribers.remove(observer)
-    }
-
-    fun notifyObservers() {
-        subscribers.forEach {
-            it(shipments)
-        }
-    }
 
     // Run Simulation starts the timer for each shipment and starts pulling updates from the test.txt
     suspend fun runSimulation() {
         // Read test.txt and uses the first 4 fields to determine the update, id, and timestamp for each update
-        File("test.txt").forEachLine {
-            val dataline = it.split(",").map { it.trim() }
+        for (line in File("test.txt").readLines()) {
+//        File("test.txt").forEachLine {
+            val dataline = line.split(",").map { it.trim() }
             // This section was to be enabled once suspend was working.
-            //delay(1000)
+            delay(1000)
             // If the update is "created", adds the shipment
 //            if (dataline[0] == "created") {
 //                var shipment = Shipment(dataline[1], dataline[0])

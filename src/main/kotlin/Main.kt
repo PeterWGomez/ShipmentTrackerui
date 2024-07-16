@@ -9,53 +9,51 @@ import androidx.compose.ui.window.application
 import kotlinx.coroutines.launch
 import org.example.Shipment
 import androidx.compose.material.TextField
+import kotlinx.coroutines.runBlocking
 
 @Composable
 @Preview
-fun App() {
-    val trackerViewHelper = remember { TrackerViewHelper() }
-    val coroutineScope = rememberCoroutineScope()
-
-    // Initialize simulator
-    var trackingSimulator = remember {TrackingSimulator()}
-    coroutineScope.launch {
-        // This updates the ui, but is not delayable
-        //trackingSimulator.runSimulation()
-        trackerViewHelper.trackShipment(trackingSimulator)
-    }
+fun App(trackingSimulator: TrackingSimulator) {
+    val trackerViewHelpers = remember { mutableStateListOf<TrackerViewHelper>() }
+    var shipmentID by remember { mutableStateOf("")}
 
     Column {
         Row {
             Button(onClick = {
-//                coroutineScope.launch {
-//                    // This updates the ui, but is not delayable
-//                    trackingSimulator.runSimulation()
-//                    trackerViewHelper.trackShipment(trackingSimulator)
-//                }
+                val shipment = trackingSimulator.findShipment(shipmentID)
+                if (shipment != null) {
+                    val trackerViewHelper = TrackerViewHelper()
+                    trackerViewHelper.trackShipment(shipment)
+                    trackerViewHelpers.add(trackerViewHelper)
+                }
             }) {
                 Text("Track")
             }
-            TextField(value = "", onValueChange = {
-                null
+            TextField(value = shipmentID, onValueChange = {
+                shipmentID = it
             })
 
         }
-        for (item: Shipment in trackingSimulator.shipments){
+        for (item in trackerViewHelpers){
 //        for (item: Shipment in trackerViewHelper.shipments){
-            Text("Status: ${item.status}")
-            Text("ID: ${item.id}")
-            Text("Notes: ${item.notes}")
-            //Text(item.updateHistory)
-            Text("Expected Delivery Time: ${item.expectedDeliveryDateTimestamp}")
-            Text("Current Location: ${item.currentLocation}")
+            Text("Status: ${item.shipmentStatus}")
+//            Text("ID: ${item.id}")
+//            Text("Notes: ${item.notes}")
+//            //Text(item.updateHistory)
+//            Text("Expected Delivery Time: ${item.expectedDeliveryDateTimestamp}")
+//            Text("Current Location: ${item.currentLocation}")
             Text("----------")
         }
     }
 }
 
 
-fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
-        App()
+fun main() = runBlocking {
+    var trackingSimulator = TrackingSimulator()
+    launch { trackingSimulator.runSimulation() }
+    application {
+        Window(onCloseRequest = ::exitApplication) {
+            App(trackingSimulator)
+        }
     }
 }
