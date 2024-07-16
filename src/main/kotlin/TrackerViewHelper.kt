@@ -2,31 +2,39 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import org.example.Shipment
+import org.example.ShippingUpdate
 
 class TrackerViewHelper() {
     var shipmentId: String by mutableStateOf("")
         private set
-    var shipmentTotes: MutableList<String> = mutableListOf()
+    var shipmentNotes: MutableList<String> = mutableListOf()
         private set
-    var shipmentUpdateHistory: MutableList<String> = mutableListOf()
+    var shipmentUpdateHistory: MutableList<ShippingUpdate> = mutableListOf()
         private set
-    var expectedDeliveryDate: MutableList<String> = mutableListOf()
+    var expectedDeliveryDate: Long by mutableStateOf(0L)
         private set
     var shipmentStatus: String by mutableStateOf("")
         private set
-
-    var shipments: MutableList<Shipment> = mutableListOf()
+    var shipmentLocation: String by mutableStateOf("")
+        private set
+    var shipmentHolder: Shipment by mutableStateOf(Shipment("pending", "loading..."))
         private set
 
     fun trackShipment (shipment: Shipment) {
 
         shipment.subscribe {
             shipmentStatus = it.status
+            shipmentId = it.id
+            shipmentNotes = it.notes
+            shipmentUpdateHistory = it.updateHistory
+            expectedDeliveryDate = it.expectedDeliveryDateTimestamp
+            shipmentLocation = it.currentLocation
         }
     }
 
     fun stopTracking() {
         println("stopTracking was called")
-        //tracksim2.unsubscribe
+//        shipmentHolder.id = idfinish
+//        .unsubscribe{}
     }
 }

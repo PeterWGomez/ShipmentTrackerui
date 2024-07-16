@@ -92,7 +92,7 @@ class TrackingSimulator(
                 findShipment(dataline[1])?.addNote("${Date(dataline[2].toLong())} ${dataline[3]}")
             }
 
-            // Since the UI is not working, these print statements will show the updates are going through
+            // Prints updates in console so you know that shipments are being tracked
             println("ID: ${findShipment(dataline[1])?.id}")
             println("Status: ${findShipment(dataline[1])?.status}")
             println("Notes: ")
@@ -106,6 +106,7 @@ class TrackingSimulator(
             println("Expected Delivery: ${Date(findShipment(dataline[1])?.expectedDeliveryDateTimestamp!!.toLong())}")
             println("Location: ${findShipment(dataline[1])?.currentLocation}")
             println("----------------------")
+
         }
 
     }
