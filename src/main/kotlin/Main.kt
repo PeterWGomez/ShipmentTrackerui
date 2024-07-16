@@ -8,6 +8,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import kotlinx.coroutines.launch
 import org.example.Shipment
+import androidx.compose.material.TextField
 
 @Composable
 @Preview
@@ -17,24 +18,21 @@ fun App() {
 
     // initialize simulator, coroutine launch needed for suspend functions to work
     var trackingSimulator = remember {TrackingSimulator()}
-    coroutineScope.launch {
-        // This updates the ui, but is not delayable
-        //trackingSimulator.runSimulation()
-    }
-
-    //---------------------------------
 
     Column {
-        Button(onClick = {
-            coroutineScope.launch {
-                // This updates the ui, but is not delayable
-                trackingSimulator.runSimulation()
-                trackerViewHelper.startTimer(trackingSimulator)
-            }
-        }) {
-            Text("Track")
-        }
         Row {
+            Button(onClick = {
+                coroutineScope.launch {
+                    // This updates the ui, but is not delayable
+                    trackingSimulator.runSimulation()
+                    trackerViewHelper.trackShipment(trackingSimulator)
+                }
+            }) {
+                Text("Track")
+            }
+            TextField(value = "", onValueChange = {
+                null
+            })
 
         }
         for (item: Shipment in trackingSimulator.shipments){

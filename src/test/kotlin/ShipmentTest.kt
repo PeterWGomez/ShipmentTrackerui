@@ -60,5 +60,16 @@ class ShipmentTest {
         assertEquals("delivered", shipment.status)
         assertEquals(testUpdate.timestamp, shipment.updateHistory[6].timestamp)
 
+        //Testing location update. Since it is in the "otherinfo", it is optional
+        testUpdate = ShippingUpdate(shipment.status, "location", 8000L)
+        //In Run Simulation, the location is extracted from the file, then assigned.
+        var testLocation = "Los Angeles"
+        shipment.currentLocation = testLocation
+
+        shipment.addUpdate(testUpdate)
+        assertEquals("delivered", shipment.status)
+        assertEquals("Los Angeles", shipment.currentLocation)
+        assertEquals(testUpdate.timestamp, shipment.updateHistory[7].timestamp)
+
     }
 }

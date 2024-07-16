@@ -3,6 +3,7 @@ import kotlinx.coroutines.delay
 import org.example.Shipment
 import org.example.ShippingUpdate
 import java.io.File
+import java.util.Date
 
 
 // NOTE to the grader: The intent is to make this private, as written here in the comments
@@ -86,17 +87,36 @@ class TrackingSimulator(
         File("test.txt").forEachLine {
             //println(it)
             val dataline = it.split(",").map { it.trim() }
-//            println(it)
-//            println(dataline)
-            println("newupdate: ${dataline[0]}")
-            println("id: ${dataline[1]}")
-            println("timestamp: ${dataline[2]}")
-            // doesn't work atm, needs to be in coroutine body?
+            // doesn't work atm
             //delay(1000)
             //gets the shipment and adds the update, needs non null asserted !! to work
             println("Previous update: ${findShipment(dataline[1])!!.status}")
             var newUpdate = ShippingUpdate(findShipment(dataline[1])!!.status, dataline[0], dataline[2].toLong())
             findShipment(dataline[1])?.addUpdate(newUpdate)
+            //If it is a note or a location update, add it here
+            if (dataline[0] == "location") {
+                print("Shipment went from ${findShipment(dataline[1])?.currentLocation} to ")
+                findShipment(dataline[1])?.currentLocation = dataline[3]
+                println("${findShipment(dataline[1])?.currentLocation} on ${Date(dataline[2].toLong())}")
+            }
+            if (dataline[0] == "noteadded") {
+                findShipment(dataline[1])?.addNote("${Date(dataline[2].toLong())} ${dataline[3]}")
+            }
+
+            // Since the UI is not working, these print statements will show the updates are going through
+            println("ID: ${findShipment(dataline[1])?.id}")
+            println("Status: ${findShipment(dataline[1])?.status}")
+            println("Notes: ")
+            for (item: String in findShipment(dataline[1])!!.notes) {
+                println(item)
+            }
+            println("Updates: ")
+            for (item: ShippingUpdate in findShipment(dataline[1])!!.updateHistory) {
+                println(item)
+            }
+            println("Expected Delivery: ${Date(findShipment(dataline[1])?.expectedDeliveryDateTimestamp!!.toLong())}")
+            println("Location: ${findShipment(dataline[1])?.currentLocation}")
+            println("----------------------")
         }
 
     }

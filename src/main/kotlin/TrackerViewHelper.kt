@@ -4,10 +4,21 @@ import androidx.compose.runtime.setValue
 import org.example.Shipment
 
 class TrackerViewHelper() {
-    var timeRemaining by mutableStateOf(60)
-    var shipments: MutableList<Shipment> = mutableListOf<Shipment>()
+    var shipmentId: String by mutableStateOf("")
+        private set
+    var shipmentTotes: MutableList<String> = mutableListOf()
+        private set
+    var shipmentUpdateHistory: MutableList<String> = mutableListOf()
+        private set
+    var expectedDeliveryDate: MutableList<String> = mutableListOf()
+        private set
+    var shipmentStatus: String by mutableStateOf("")
+        private set
 
-    suspend fun startTimer (tracksim: TrackingSimulator) {
+    var shipments: MutableList<Shipment> = mutableListOf()
+        private set
+
+    suspend fun trackShipment (tracksim: TrackingSimulator) {
         shipments = tracksim.shipments
         var tracksim2 = TrackingSimulator()
         tracksim2.shipments = shipments
@@ -15,5 +26,10 @@ class TrackerViewHelper() {
             tracksim2.shipments = it
         }
         tracksim2.runSimulation()
+    }
+
+    fun stopTracking() {
+        println("stopTracking was called")
+        //tracksim2.unsubscribe
     }
 }
