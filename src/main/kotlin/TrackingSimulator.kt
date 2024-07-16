@@ -7,8 +7,7 @@ import java.util.Date
 
 
 // NOTE to the grader: The intent is to make this private, as written here in the comments
-// I chose to not implement that until I got the UI working properly, as I started
-// to suspect this was causing the issues.
+// I chose to not implement that until I got the UI working properly
 //
 //class TrackingSimulator(
 //    private var _shipments: MutableList<Shipment> = mutableListOf<Shipment>()
@@ -83,14 +82,18 @@ class TrackingSimulator(
 
     // Run Simulation starts the timer for each shipment and starts pulling updates from the test.txt
     suspend fun runSimulation() {
-        // Read test.txt and use the first 3 fields to determine the update, id, and timestamp for each update
+        // Read test.txt and uses the first 4 fields to determine the update, id, and timestamp for each update
         File("test.txt").forEachLine {
-            //println(it)
             val dataline = it.split(",").map { it.trim() }
-            // doesn't work atm
+            // This section was to be enabled once suspend was working.
             //delay(1000)
-            //gets the shipment and adds the update, needs non null asserted !! to work
-            println("Previous update: ${findShipment(dataline[1])!!.status}")
+            // If the update is "created", adds the shipment
+//            if (dataline[0] == "created") {
+//                var shipment = Shipment(dataline[1], dataline[0])
+//            }
+
+            // Gets the shipment and adds the update
+//            println("Previous update: ${findShipment(dataline[1])!!.status}")
             var newUpdate = ShippingUpdate(findShipment(dataline[1])!!.status, dataline[0], dataline[2].toLong())
             findShipment(dataline[1])?.addUpdate(newUpdate)
             //If it is a note or a location update, add it here
@@ -112,7 +115,7 @@ class TrackingSimulator(
             }
             println("Updates: ")
             for (item: ShippingUpdate in findShipment(dataline[1])!!.updateHistory) {
-                println(item)
+                println("${item.newStatus} on ${Date(item.timestamp.toLong())}")
             }
             println("Expected Delivery: ${Date(findShipment(dataline[1])?.expectedDeliveryDateTimestamp!!.toLong())}")
             println("Location: ${findShipment(dataline[1])?.currentLocation}")

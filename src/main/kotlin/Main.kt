@@ -16,17 +16,22 @@ fun App() {
     val trackerViewHelper = remember { TrackerViewHelper() }
     val coroutineScope = rememberCoroutineScope()
 
-    // initialize simulator, coroutine launch needed for suspend functions to work
+    // Initialize simulator
     var trackingSimulator = remember {TrackingSimulator()}
+    coroutineScope.launch {
+        // This updates the ui, but is not delayable
+        //trackingSimulator.runSimulation()
+        trackerViewHelper.trackShipment(trackingSimulator)
+    }
 
     Column {
         Row {
             Button(onClick = {
-                coroutineScope.launch {
-                    // This updates the ui, but is not delayable
-                    trackingSimulator.runSimulation()
-                    trackerViewHelper.trackShipment(trackingSimulator)
-                }
+//                coroutineScope.launch {
+//                    // This updates the ui, but is not delayable
+//                    trackingSimulator.runSimulation()
+//                    trackerViewHelper.trackShipment(trackingSimulator)
+//                }
             }) {
                 Text("Track")
             }
