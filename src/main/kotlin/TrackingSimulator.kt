@@ -88,7 +88,7 @@ class TrackingSimulator(
             val dataline = it.split(",").map { it.trim() }
 //            println(it)
 //            println(dataline)
-            println("update: ${dataline[0]}")
+            println("newupdate: ${dataline[0]}")
             println("id: ${dataline[1]}")
             println("timestamp: ${dataline[2]}")
             // doesn't work atm, needs to be in coroutine body?
