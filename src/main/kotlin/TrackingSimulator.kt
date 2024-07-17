@@ -1,52 +1,22 @@
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.example.Shipment
 import org.example.ShippingUpdate
 import java.io.File
 import java.util.Date
 
-
-// NOTE to the grader: The intent is to make this private, as written here in the comments
-// I chose to not implement that until I got the UI working properly
-//
-//class TrackingSimulator(
-//    private var _shipments: MutableList<Shipment> = mutableListOf<Shipment>()
-//) {
-//    var shipments: List<Shipment>
-//      get() = _shipments.toList()
-//      private set(value) {
-//        _shipments = value.toMutableList()
-//      }
-//
-//}
-
 class TrackingSimulator(
     var shipments: MutableList<Shipment> = mutableListOf<Shipment>()
 ) {
     init {
-        // Normally, this would populate this list with the active shipments from a database
-        // then the user would request from this list.
-        // For now, it will be initialized with the shipping IDs from test.txt
-        var shipment = Shipment("pending", "s10000")
-        var shipment2 = Shipment("pending", "s10001")
-        var shipment3 = Shipment("pending", "s10002")
-        var shipment4 = Shipment("pending", "s10003")
-        var shipment5 = Shipment("pending", "s10004")
-        var shipment6 = Shipment("pending", "s10005")
-        var shipment7 = Shipment("pending", "s10006")
-        var shipment8 = Shipment("pending", "s10007")
-        var shipment9 = Shipment("pending", "s10008")
-        var shipment10 = Shipment("pending", "s10009")
-        addShipment(shipment)
-        addShipment(shipment2)
-        addShipment(shipment3)
-        addShipment(shipment4)
-        addShipment(shipment5)
-        addShipment(shipment6)
-        addShipment(shipment7)
-        addShipment(shipment8)
-        addShipment(shipment9)
-        addShipment(shipment10)
+        for (line in File("test.txt").readLines()) {
+            val dataline = line.split(",").map { it.trim() }
+            if (dataline[0] == "created") {
+                var shipment = Shipment(id = dataline[1])
+                shipments.add(shipment)
+                var newUpdate = ShippingUpdate(findShipment(dataline[1])!!.status, dataline[0], dataline[2].toLong())
+                findShipment(dataline[1])?.addUpdate(newUpdate)
+            }
+        }
     }
 
     //Returns the shipment of matching id
@@ -56,7 +26,6 @@ class TrackingSimulator(
                 return shipment
             }
         }
-        // Add error message in console saying the shipment was not found
         return null
     }
     //Adds a shipment
@@ -69,17 +38,11 @@ class TrackingSimulator(
     suspend fun runSimulation() {
         // Read test.txt and uses the first 4 fields to determine the update, id, and timestamp for each update
         for (line in File("test.txt").readLines()) {
-//        File("test.txt").forEachLine {
             val dataline = line.split(",").map { it.trim() }
             // This section was to be enabled once suspend was working.
             delay(1000)
-            // If the update is "created", adds the shipment
-//            if (dataline[0] == "created") {
-//                var shipment = Shipment(dataline[1], dataline[0])
-//            }
 
             // Gets the shipment and adds the update
-//            println("Previous update: ${findShipment(dataline[1])!!.status}")
             var newUpdate = ShippingUpdate(findShipment(dataline[1])!!.status, dataline[0], dataline[2].toLong())
             findShipment(dataline[1])?.addUpdate(newUpdate)
             //If it is a note or a location update, add it here

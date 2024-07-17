@@ -1,7 +1,5 @@
 package org.example
 
-import kotlinx.coroutines.delay
-
 data class Shipment(
     var status: String = "pending",
     var id: String = "pending",
@@ -26,12 +24,6 @@ data class Shipment(
         }
     }
 
-    private var _updateHistory = mutableListOf<ShippingUpdate>()
-
-    val ShippingUpdates: List<ShippingUpdate>
-        get() {
-            return _updateHistory.toList()
-        }
     fun addNote(note: String) {
         notes.add(note)
         notifyObservers()

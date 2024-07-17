@@ -10,25 +10,25 @@ class TrackingSimulatorTest {
     fun testUpdateConstruction() {
         //Testing all 10 shipments being initialized
         var testTrack = TrackingSimulator()
-        assertEquals("pending", testTrack.shipments[0].status)
+        assertEquals("created", testTrack.shipments[0].status)
         assertEquals("s10000", testTrack.shipments[0].id)
-        assertEquals("pending", testTrack.shipments[1].status)
+        assertEquals("created", testTrack.shipments[1].status)
         assertEquals("s10001", testTrack.shipments[1].id)
-        assertEquals("pending", testTrack.shipments[2].status)
+        assertEquals("created", testTrack.shipments[2].status)
         assertEquals("s10002", testTrack.shipments[2].id)
-        assertEquals("pending", testTrack.shipments[3].status)
+        assertEquals("created", testTrack.shipments[3].status)
         assertEquals("s10003", testTrack.shipments[3].id)
-        assertEquals("pending", testTrack.shipments[4].status)
+        assertEquals("created", testTrack.shipments[4].status)
         assertEquals("s10004", testTrack.shipments[4].id)
-        assertEquals("pending", testTrack.shipments[5].status)
+        assertEquals("created", testTrack.shipments[5].status)
         assertEquals("s10005", testTrack.shipments[5].id)
-        assertEquals("pending", testTrack.shipments[6].status)
+        assertEquals("created", testTrack.shipments[6].status)
         assertEquals("s10006", testTrack.shipments[6].id)
-        assertEquals("pending", testTrack.shipments[7].status)
+        assertEquals("created", testTrack.shipments[7].status)
         assertEquals("s10007", testTrack.shipments[7].id)
-        assertEquals("pending", testTrack.shipments[8].status)
+        assertEquals("created", testTrack.shipments[8].status)
         assertEquals("s10008", testTrack.shipments[8].id)
-        assertEquals("pending", testTrack.shipments[9].status)
+        assertEquals("created", testTrack.shipments[9].status)
         assertEquals("s10009", testTrack.shipments[9].id)
 
         //Testing findShipment
@@ -45,7 +45,7 @@ class TrackingSimulatorTest {
         assertEquals(null, testTrack.findShipment("nothing"))
 
         //Testing addShipment
-        var testshipment = Shipment("pending", "s10010")
+        var testshipment = Shipment("created", "s10010")
         testTrack.addShipment(testshipment)
         assertEquals("s10010", testTrack.findShipment("s10010")?.id)
 

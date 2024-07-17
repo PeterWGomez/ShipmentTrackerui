@@ -11,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import kotlinx.coroutines.launch
-import org.example.Shipment
 import androidx.compose.material.TextField
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -58,7 +57,7 @@ fun App(trackingSimulator: TrackingSimulator) {
             for (item: ShippingUpdate in item.shipmentUpdateHistory) {
                 Text("${item.newStatus} on ${Date(item.timestamp.toLong())}")
             }
-            Text("Expected Delivery Time: ${Date(item.expectedDeliveryDate.toLong())}")
+            Text("Expected Delivery Time: ${Date(item.expectedDeliveryDate)}")
             Text("Current Location: ${item.shipmentLocation}")
             Text("----------")
 //            Button(onClick = { item.stopTracking()

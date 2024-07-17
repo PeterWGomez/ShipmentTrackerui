@@ -17,8 +17,6 @@ class TrackerViewHelper() {
         private set
     var shipmentLocation: String by mutableStateOf("")
         private set
-    var shipmentHolder: Shipment by mutableStateOf(Shipment("pending", "loading..."))
-        private set
 
     fun trackShipment (shipment: Shipment) {
 
