@@ -17,6 +17,8 @@ class TrackerViewHelper() {
         private set
     var shipmentLocation: String by mutableStateOf("")
         private set
+    var shipmentType: String by mutableStateOf("")
+        private set
 
     fun trackShipment (shipment: Shipment) {
 
@@ -25,8 +27,9 @@ class TrackerViewHelper() {
             shipmentId = it.id
             shipmentNotes = it.notes
             shipmentUpdateHistory = it.updateHistory
-            expectedDeliveryDate = it.expectedDeliveryDateTimestamp
+            expectedDeliveryDate = it.createdTimestamp
             shipmentLocation = it.currentLocation
+            shipmentType = it.shipmentType
         }
     }
 

@@ -7,16 +7,25 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.application
-import kotlinx.coroutines.launch
 import androidx.compose.material.TextField
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.example.ShippingUpdate
+import java.io.File
 import java.util.*
+
 
 @Composable
 @Preview
@@ -47,6 +56,7 @@ fun App(trackingSimulator: TrackingSimulator) {
 
         }
         for (item in trackerViewHelpers){
+            Text("Shipment Type: ${item.shipmentType}")
             Text("Status: ${item.shipmentStatus}")
             Text("ID: ${item.shipmentId}")
             Text("Notes: ")
@@ -60,10 +70,6 @@ fun App(trackingSimulator: TrackingSimulator) {
             Text("Expected Delivery Time: ${Date(item.expectedDeliveryDate)}")
             Text("Current Location: ${item.shipmentLocation}")
             Text("----------")
-//            Button(onClick = { item.stopTracking()
-//            }) {
-//                Text("Remove")
-//            }
         }
     }
 }
