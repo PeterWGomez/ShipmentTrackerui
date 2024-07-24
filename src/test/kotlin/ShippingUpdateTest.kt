@@ -5,11 +5,12 @@ import org.junit.Test
 class ShippingUpdateTest {
     @Test
     fun testUpdateConstruction() {
-        var testUpdate = ShippingUpdate("previous", "new", 1000L)
+        var testUpdate = ShippingUpdate("previous", "new", 1000L, "BulkUpdate")
         // Test construction and public getter
         assertEquals("previous", testUpdate.previousStatus)
         assertEquals("new", testUpdate.newStatus)
         assertEquals(1000L, testUpdate.timestamp)
+        assertEquals("BulkUpdate", testUpdate.shipmentType)
 
         // Test public setter
         testUpdate.previousStatus = "previous2"

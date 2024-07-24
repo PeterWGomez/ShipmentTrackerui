@@ -18,7 +18,7 @@ class TrackingSimulator(
             if (dataline[0] == "created") {
                 var shipment = Shipment(id = dataline[1], shipmentType = dataline[3])
                 shipments.add(shipment)
-                var newUpdate = ShippingUpdate(findShipment(dataline[1])!!.status, dataline[0], dataline[2].toLong())
+                var newUpdate = ShippingUpdate(findShipment(dataline[1])!!.status, dataline[0], dataline[2].toLong(), dataline[3])
                 findShipment(dataline[1])?.addUpdate(newUpdate)
             }
         }

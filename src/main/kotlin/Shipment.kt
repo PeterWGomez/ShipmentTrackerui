@@ -43,14 +43,36 @@ data class Shipment (
             createdTimestamp = update.timestamp
         }
         if (update.newStatus == "shipped") {
-            if (!checkBulk(update.timestamp, createdTimestamp) && id == "s10000") {
-                addNote("WARNING: Bulk shipment arrived early. Sending package agents to retrieve the package")
+            var delayflag = false
+            if (!checkBulk(update.timestamp, createdTimestamp) && shipmentType == "BulkShipment") {
+                for (paststatus in updateHistory) {
+                    if (paststatus.newStatus == "delayed") {
+                        delayflag = true
+                    }
+                }
+                if (!delayflag) {
+                    addNote("WARNING: Bulk shipment will arrive early.")
+                }
             }
-            if (!checkExpress(update.timestamp, createdTimestamp) && id == "s10002") {
-                addNote("WARNING: Express shipment arrived late. Sending package agents to retrieve the package")
+            if (!checkExpress(update.timestamp, createdTimestamp) && id == "ExpressShipment") {
+                for (paststatus in updateHistory) {
+                    if (paststatus.newStatus == "delayed") {
+                        delayflag = true
+                    }
+                }
+                if (!delayflag) {
+                    addNote("WARNING: Express shipment will arrive late.")
+                }
             }
-            if (!checkOvernight(update.timestamp, createdTimestamp) && id == "s10003") {
-                addNote("WARNING: Overnight shipment arrived late. Sending package agents to retrieve the package")
+            if (!checkOvernight(update.timestamp, createdTimestamp) && id == "OvernightShipment") {
+                for (paststatus in updateHistory) {
+                    if (paststatus.newStatus == "delayed") {
+                        delayflag = true
+                    }
+                }
+                if (!delayflag) {
+                    addNote("WARNING: Overnight shipment will arrive late.")
+                }
             }
         }
         notifyObservers()
