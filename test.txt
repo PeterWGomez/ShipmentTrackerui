@@ -1,21 +1,21 @@
 created,s10000,1652712855468,BulkShipment
 created,s10001,1652712855468,StandardShipment
-created,s10002,1652712855468,ExpressShipment
+created,s10002,0,ExpressShipment
 created,s10003,1652712855468,OvernightShipment
 
 for the video:
 
 success then failure:
 shipped,s10000,9999999999999
-shipped,s10000,1652712855469
+shipped,s10000,1652712955469
 
 shipped,s10001,1652712855469
 shipped,s10001,9999999999999
 
-shipped,s10002,1652712855469
-shipped,s10002,9999999999999
+shipped,s10002,260200
+shipped,s10002,259200000
 
-shipped,s10003,1652712855469
+shipped,s10003,1652712955469
 shipped,s10003,9999999999999
 
 demonstrate delay working:

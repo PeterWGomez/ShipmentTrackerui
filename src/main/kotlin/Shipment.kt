@@ -54,7 +54,7 @@ data class Shipment (
                     addNote("WARNING: Bulk shipment will arrive early.")
                 }
             }
-            if (!checkExpress(update.timestamp, createdTimestamp) && id == "ExpressShipment") {
+            if (!checkExpress(update.timestamp, createdTimestamp) && shipmentType == "ExpressShipment") {
                 for (paststatus in updateHistory) {
                     if (paststatus.newStatus == "delayed") {
                         delayflag = true
@@ -64,7 +64,7 @@ data class Shipment (
                     addNote("WARNING: Express shipment will arrive late.")
                 }
             }
-            if (!checkOvernight(update.timestamp, createdTimestamp) && id == "OvernightShipment") {
+            if (!checkOvernight(update.timestamp, createdTimestamp) && shipmentType == "OvernightShipment") {
                 for (paststatus in updateHistory) {
                     if (paststatus.newStatus == "delayed") {
                         delayflag = true

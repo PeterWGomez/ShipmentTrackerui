@@ -74,7 +74,7 @@ class TrackingSimulator(
                     for (item: ShippingUpdate in findShipment(dataline[1])!!.updateHistory) {
                         println("${item.newStatus} on ${Date(item.timestamp.toLong())}")
                     }
-                    println("Date Created: ${Date(findShipment(dataline[1])?.createdTimestamp!!.toLong())}")
+                    println("Date Created: ${findShipment(dataline[1])?.createdTimestamp!!.toLong()}")
                     println("Location: ${findShipment(dataline[1])?.currentLocation}")
                     println("----------------------")
                     call.respondText { "Nice!" }

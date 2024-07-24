@@ -67,7 +67,6 @@ fun App(trackingSimulator: TrackingSimulator) {
             for (item: ShippingUpdate in item.shipmentUpdateHistory) {
                 Text("${item.newStatus} on ${Date(item.timestamp.toLong())}")
             }
-            Text("Expected Delivery Time: ${Date(item.expectedDeliveryDate)}")
             Text("Current Location: ${item.shipmentLocation}")
             Text("----------")
         }
